@@ -1,5 +1,5 @@
-import '../app/global.css';
-import { initialize, mswDecorator } from 'msw-storybook-addon';
+import "../app/global.css";
+import { initialize, mswDecorator } from "msw-storybook-addon";
 
 // Initialize MSW
 initialize();
@@ -7,11 +7,10 @@ initialize();
 export const decorators = [mswDecorator];
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
     matchers: {
       color: /(background|color)$/i,
       date: /Date$/,
     },
   },
-}; 
+};

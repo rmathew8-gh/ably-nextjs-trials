@@ -32,4 +32,4 @@ export const errorHandlers = [
       { status: 501 },
     );
   }),
-]; 
+];
