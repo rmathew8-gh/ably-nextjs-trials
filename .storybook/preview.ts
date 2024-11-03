@@ -1,3 +1,4 @@
+import '../app/global.css';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 
 // Initialize MSW
