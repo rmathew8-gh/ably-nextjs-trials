@@ -19,13 +19,13 @@ export const Messages = ({ messages: initialMessages = [] }: MessagesProps) => {
   }, []);
 
   return (
-    <div className="flex flex-col justify-start items-start gap-4">
-      <div className="font-manrope text-sm whitespace-nowrap text-black text-opacity-100 leading-4 uppercase tracking-widest font-medium">
-        <span className="uppercase">Messages</span>
+    <div className="flex flex-col gap-2">
+      <div className="text-sm">
+        <span>Messages</span>
       </div>
-      <div className="flex flex-col justify-start items-start rounded-lg border-slate-100 border-t border-b border-l border-r border-solid border bg-white">
+      <div className="border rounded-lg">
         {messages.length > 0 ? (
-          <div className="flex flex-col gap-4 p-6 w-full">
+          <div className="p-2">
             {messages.map((message) => (
               <Message
                 key={message.id}
@@ -36,8 +36,8 @@ export const Messages = ({ messages: initialMessages = [] }: MessagesProps) => {
             ))}
           </div>
         ) : (
-          <div className="flex flex-row w-[752px] justify-start items-start gap-4 p-6">
-            <div className="font-jetbrains-mono text-sm min-w-[219px] whitespace-nowrap text-slate-500 text-opacity-100 leading-normal font-medium">
+          <div className="p-2">
+            <div className="text-sm text-gray-500">
               <p>No messages found</p>
             </div>
           </div>
