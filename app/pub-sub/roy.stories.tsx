@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { http } from "msw";
-// import { initialize, mswDecorator } from "msw-storybook-addon";
-
-// Initialize MSW
-// initialize();
 
 export default {
   title: "Task",
-  // decorators: [mswDecorator],
   parameters: {
     msw: {
       handlers: [
@@ -24,7 +19,7 @@ export default {
   },
 };
 
-const Task = ({ task: { title, state } }) => {
+const Task = ({ task: { title, state } }: { task: { title: string; state: string } }) => {
   const [sampleData, setSampleData] = useState(null);
 
   useEffect(() => {

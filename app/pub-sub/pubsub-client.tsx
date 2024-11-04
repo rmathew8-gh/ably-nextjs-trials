@@ -48,27 +48,64 @@ export function PubSubMessages() {
 
   const [messageText, setMessageText] = useState<string>("A message");
 
-  const publicFromClientHandler: MouseEventHandler = (
+  const publicFromClientHandler: MouseEventHandler = async (
     _event: MouseEvent<HTMLButtonElement>,
   ) => {
     if (channel === null) return;
-    channel.publish("update-from-client", {
-      text: `${messageText} @ ${new Date().toISOString()}`,
-    });
+    try {
+      await channel.publish("update-from-client", {
+        text: `${messageText} @ ${new Date().toISOString()}`,
+      });
+      setLogs((prev) => [
+        ...prev,
+        new LogEntry(`✅ Message published successfully from client`),
+      ]);
+    } catch (error) {
+      setLogs((prev) => [
+        ...prev,
+        new LogEntry(
+          `❌ Error publishing message: ${error instanceof Error ? error.message : "Unknown error"}`,
+        ),
+      ]);
+    }
   };
 
-  const publicFromServerHandler: MouseEventHandler = (
+  const publicFromServerHandler: MouseEventHandler = async (
     _event: MouseEvent<HTMLButtonElement>,
   ) => {
-    fetch("/publish", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        text: `${messageText} @ ${new Date().toISOString()}`,
-      }),
-    });
+    try {
+      const response = await fetch("/publish", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          text: `${messageText} @ ${new Date().toISOString()}`,
+        }),
+      });
+
+      if (!response.ok) {
+        setLogs((prev) => [
+          ...prev,
+          new LogEntry(
+            `❌ Error publishing message: ${response.status} ${response.statusText}`,
+          ),
+        ]);
+        return;
+      }
+
+      setLogs((prev) => [
+        ...prev,
+        new LogEntry(`✅ Message published successfully from server`),
+      ]);
+    } catch (error) {
+      setLogs((prev) => [
+        ...prev,
+        new LogEntry(
+          `❌ Error publishing message: ${error instanceof Error ? error.message : "Unknown error"}`,
+        ),
+      ]);
+    }
   };
 
   return (
