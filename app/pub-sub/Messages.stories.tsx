@@ -5,15 +5,37 @@ import { mockMessages } from "./mockMessageData";
 import * as Ably from "ably";
 import { AblyProvider, ChannelProvider } from "ably/react";
 
-// Create Ably client
-const client = new Ably.Realtime({ authUrl: '/token', authMethod: 'POST' });
+// Create a mock Ably client
+const mockAbly = {
+  connection: {
+    state: 'connected',
+  },
+  channels: {
+    get: () => ({
+      publish: async () => {},
+      subscribe: (callback: Function) => {
+        // Simulate incoming messages
+        setTimeout(() => {
+          callback({
+            id: 'mock-id',
+            data: {
+              label: 'Mock realtime message',
+              isActive: true
+            }
+          });
+        }, 1000);
+        return () => {}; // Cleanup function
+      },
+    }),
+  },
+} as unknown as Ably.Realtime;
 
 const meta: Meta<typeof Messages> = {
   title: "RoyComponents/Messages",
   component: Messages,
   decorators: [
     (Story) => (
-      <AblyProvider client={client}>
+      <AblyProvider client={mockAbly}>
         <ChannelProvider channelName="messages-channel">
           <Story />
         </ChannelProvider>
@@ -70,4 +92,42 @@ export const LongMessages: Story = {
       handlers: [createMessageHandler("long")],
     },
   },
+};
+
+// Example of creating different mock behaviors
+const createMockAbly = (messages: any[]) => ({
+  connection: {
+    state: 'connected',
+  },
+  channels: {
+    get: () => ({
+      publish: async () => {},
+      subscribe: (callback: Function) => {
+        messages.forEach((msg, index) => {
+          setTimeout(() => {
+            callback({
+              id: `mock-id-${index}`,
+              data: msg
+            });
+          }, 1000 * (index + 1));
+        });
+        return () => {};
+      },
+    }),
+  },
+} as unknown as Ably.Realtime);
+
+export const WithRealtimeMessages: Story = {
+  decorators: [
+    (Story) => (
+      <AblyProvider client={createMockAbly([
+        { label: 'First message', isActive: true },
+        { label: 'Second message', isActive: false },
+      ])}>
+        <ChannelProvider channelName="messages-channel">
+          <Story />
+        </ChannelProvider>
+      </AblyProvider>
+    ),
+  ],
 };
