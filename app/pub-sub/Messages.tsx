@@ -13,9 +13,30 @@ export const Messages = ({ messages: initialMessages = [] }: MessagesProps) => {
   const [messages, setMessages] = useState(initialMessages);
 
   useEffect(() => {
-    fetch("api/messages")
+    const query = `
+      query GetMessages($limit: Int!) {
+        messages(limit: $limit) {
+          id
+          label
+          isActive
+        }
+      }
+    `;
+
+    fetch('/api/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables: {
+          limit: 10
+        },
+      }),
+    })
       .then((res) => res.json())
-      .then((data) => setMessages(data));
+      .then((result) => setMessages(result.data.messages));
   }, []);
 
   return (

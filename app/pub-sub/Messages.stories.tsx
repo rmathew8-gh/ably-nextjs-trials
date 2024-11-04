@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Messages } from "./Messages";
-import { http, HttpResponse } from "msw";
+import { graphql, HttpResponse } from "msw";
 import { mockMessages } from "./mockMessageData";
 
 const meta: Meta<typeof Messages> = {
@@ -15,13 +15,14 @@ const meta: Meta<typeof Messages> = {
 export default meta;
 type Story = StoryObj<typeof Messages>;
 
-const baseUrl = "api/messages";
-
 const createMessageHandler = (type: keyof typeof mockMessages) => {
-  return http.get(baseUrl, ({ request }) => {
-    const url = new URL(request.url);
-    const messageType = url.searchParams.get("type") || type;
-    return HttpResponse.json(mockMessages[messageType as keyof typeof mockMessages]);
+  return graphql.query("GetMessages", ({ variables }) => {
+    const messageType = variables.type || type;
+    return HttpResponse.json({
+      data: {
+        messages: mockMessages[messageType as keyof typeof mockMessages],
+      },
+    });
   });
 };
 
