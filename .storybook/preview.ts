@@ -1,10 +1,9 @@
 import "../app/global.css";
-import { initialize, mswDecorator } from "msw-storybook-addon";
+import { initialize, mswLoader } from "msw-storybook-addon";
 
-// Initialize MSW
 initialize();
 
-export const decorators = [mswDecorator];
+export const loaders = [mswLoader];
 
 export const parameters = {
   controls: {

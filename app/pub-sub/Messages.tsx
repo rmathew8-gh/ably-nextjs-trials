@@ -2,15 +2,15 @@ import { Message } from "./Message";
 import { useEffect, useState } from "react";
 
 interface MessagesProps {
-  messages: Array<{
+  messages?: Array<{
     id: string;
     label: string;
     isActive: boolean;
   }>;
 }
 
-export const Messages = () => {
-  const [messages, setMessages] = useState([]);
+export const Messages = ({ messages: initialMessages = [] }: MessagesProps) => {
+  const [messages, setMessages] = useState(initialMessages);
 
   useEffect(() => {
     fetch("api/messages")
@@ -29,6 +29,7 @@ export const Messages = () => {
             {messages.map((message) => (
               <Message
                 key={message.id}
+                id={message.id}
                 label={message.label}
                 isActive={message.isActive}
               />

@@ -1,8 +1,9 @@
 interface MessageProps {
+  id: string;
   label: string;
   isActive: boolean;
 }
 
-export const Message = ({ label, isActive = false }: MessageProps) => {
-  return <div>{`${label} [active: ${isActive}]`}</div>;
+export const Message = ({ id, label, isActive = false }: MessageProps) => {
+  return <div>{`id: ${id}; ${label} [active: ${isActive}]`}</div>;
 };
