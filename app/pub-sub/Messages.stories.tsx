@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Messages } from "./Messages";
 import { http, HttpResponse } from "msw";
+import { mockMessages } from "./mockMessageData";
 
 const meta: Meta<typeof Messages> = {
   title: "RoyComponents/Messages",
@@ -16,14 +17,18 @@ type Story = StoryObj<typeof Messages>;
 
 const baseUrl = "api/messages";
 
+const createMessageHandler = (type: keyof typeof mockMessages) => {
+  return http.get(baseUrl, ({ request }) => {
+    const url = new URL(request.url);
+    const messageType = url.searchParams.get("type") || type;
+    return HttpResponse.json(mockMessages[messageType as keyof typeof mockMessages]);
+  });
+};
+
 export const Empty: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl, () => {
-          return HttpResponse.json([]);
-        }),
-      ],
+      handlers: [createMessageHandler("empty")],
     },
   },
 };
@@ -31,15 +36,7 @@ export const Empty: Story = {
 export const WithMessages: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl, () => {
-          return HttpResponse.json([
-            { id: "1", label: "First message", isActive: true },
-            { id: "2", label: "Second message", isActive: false },
-            { id: "3", label: "Third message", isActive: true },
-          ]);
-        }),
-      ],
+      handlers: [createMessageHandler("default")],
     },
   },
 };
@@ -47,13 +44,7 @@ export const WithMessages: Story = {
 export const SingleMessage: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl, () => {
-          return HttpResponse.json([
-            { id: "1", label: "Only message", isActive: true },
-          ]);
-        }),
-      ],
+      handlers: [createMessageHandler("single")],
     },
   },
 };
@@ -61,24 +52,7 @@ export const SingleMessage: Story = {
 export const LongMessages: Story = {
   parameters: {
     msw: {
-      handlers: [
-        http.get(baseUrl, () => {
-          return HttpResponse.json([
-            {
-              id: "1",
-              label:
-                "This is a very long message that might need special handling in the UI to ensure it displays correctly and doesn't break the layout",
-              isActive: true,
-            },
-            {
-              id: "2",
-              label:
-                "Another long message with some technical content: ERROR_CODE_5123: Connection timeout after 30000ms",
-              isActive: false,
-            },
-          ]);
-        }),
-      ],
+      handlers: [createMessageHandler("long")],
     },
   },
 };
