@@ -3,7 +3,7 @@ import axios from "axios";
 import { http } from "msw";
 
 export default {
-  title: "Task",
+  title: "RoyComponents/ChatCard",
   parameters: {
     msw: {
       handlers: [
@@ -19,7 +19,11 @@ export default {
   },
 };
 
-const Task = ({ task: { title, state } }: { task: { title: string; state: string } }) => {
+const ChatCard = ({
+  task: { title, state },
+}: {
+  task: { title: string; state: string };
+}) => {
   const [sampleData, setSampleData] = useState(null);
 
   useEffect(() => {
@@ -48,9 +52,9 @@ const Task = ({ task: { title, state } }: { task: { title: string; state: string
 
 export const Default = {
   render: () => (
-    <Task
+    <ChatCard
       task={{
-        title: "Test Task",
+        title: "Test ChatCard",
         state: "TASK_INBOX",
       }}
     />

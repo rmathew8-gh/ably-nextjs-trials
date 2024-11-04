@@ -10,7 +10,7 @@ const mockAblyClient = new Ably.Realtime({
 });
 
 const meta: Meta<typeof PubSubMessages> = {
-  title: "Features/PubSub/PubSubMessages",
+  title: "RoyComponents/PubSubMessages",
   component: PubSubMessages,
   decorators: [
     (Story) => (
