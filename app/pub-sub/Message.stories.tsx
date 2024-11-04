@@ -5,7 +5,7 @@ const meta: Meta<typeof Message> = {
   component: Message,
   title: "RoyComponents/Message",
   args: {
-    label: "Default",
+    label: "Default Message",
     isActive: false,
   },
 };
@@ -16,13 +16,13 @@ type Story = StoryObj<typeof Message>;
 
 export const Default: Story = {
   args: {
-    label: "Primary",
+    label: "Primary Message",
   },
 };
 
 export const Secondary: Story = {
   args: {
-    label: "Secondary",
+    label: "Secondary Message",
     isActive: true,
   },
 };
