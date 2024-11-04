@@ -1,3 +1,4 @@
+import { useChannel } from "ably/react";
 import { Message } from "./Message";
 import { useEffect, useState } from "react";
 
@@ -12,32 +13,43 @@ interface MessagesProps {
 export const Messages = ({ messages: initialMessages = [] }: MessagesProps) => {
   const [messages, setMessages] = useState(initialMessages);
 
-  useEffect(() => {
-    const query = `
-      query GetMessages($limit: Int!) {
-        messages(limit: $limit) {
-          id
-          label
-          isActive
-        }
-      }
-    `;
+  // Subscribe to messages using useChannel hook
+  const { channel } = useChannel("messages-channel", (message) => {
+    // Add new messages as they come in
+    const newMessage = {
+      id: message.id ?? crypto.randomUUID(),
+      label: message.data.label as string,
+      isActive: message.data.isActive as boolean,
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  });
 
-    fetch('/api/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query,
-        variables: {
-          limit: 10
-        },
-      }),
-    })
-      .then((res) => res.json())
-      .then((result) => setMessages(result.data.messages));
-  }, []);
+  // useEffect(() => {
+  //   const query = `
+  //     query GetMessages($limit: Int!) {
+  //       messages(limit: $limit) {
+  //         id
+  //         label
+  //         isActive
+  //       }
+  //     }
+  //   `;
+
+  //   fetch('/api/graphql', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       query,
+  //       variables: {
+  //         limit: 10
+  //       },
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => setMessages(result.data.messages));
+  // }, []);
 
   return (
     <div className="flex flex-col gap-2">

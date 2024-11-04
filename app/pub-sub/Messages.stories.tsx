@@ -2,10 +2,24 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Messages } from "./Messages";
 import { graphql, HttpResponse } from "msw";
 import { mockMessages } from "./mockMessageData";
+import * as Ably from "ably";
+import { AblyProvider, ChannelProvider } from "ably/react";
+
+// Create Ably client
+const client = new Ably.Realtime({ authUrl: '/token', authMethod: 'POST' });
 
 const meta: Meta<typeof Messages> = {
   title: "RoyComponents/Messages",
   component: Messages,
+  decorators: [
+    (Story) => (
+      <AblyProvider client={client}>
+        <ChannelProvider channelName="messages-channel">
+          <Story />
+        </ChannelProvider>
+      </AblyProvider>
+    ),
+  ],
   parameters: {
     layout: "centered",
   },
