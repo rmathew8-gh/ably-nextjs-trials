@@ -22,7 +22,7 @@ export const mockMessages = {
   ],
 };
 
-export const mockChats = {
+export const mockChats0 = {
   empty: [],
   single: [{ id: "1", label: "Only message", isActive: true }],
   default: [
@@ -44,4 +44,51 @@ export const mockChats = {
       isActive: false,
     },
   ],
-}; 
+};
+
+export const mockChats = {
+  data: {
+    GetChats: [
+      {
+        channelName: "company-1",
+        participants: [
+          {
+            chatId: 1,
+            scalisUser: {
+              firstName: "Regan",
+              lastName: "Robel",
+            },
+          },
+          {
+            chatId: 15,
+            scalisUser: {
+              firstName: "Timmy",
+              lastName: "Pagac",
+            },
+          },
+          {
+            chatId: 18,
+            scalisUser: {
+              firstName: "Nina",
+              lastName: "Kihn",
+            },
+          },
+          {
+            chatId: 1,
+            scalisUser: {
+              firstName: "Aliyah",
+              lastName: "Mante",
+            },
+          },
+          {
+            chatId: 1,
+            scalisUser: {
+              firstName: "Roy",
+              lastName: "Mathew",
+            },
+          },
+        ],
+      },
+    ],
+  },
+};

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { PubSubMessages } from "./pubsub-client";
 import * as Ably from "ably";
 import { AblyProvider, ChannelProvider } from "ably/react";
-import { pubSubHandlers, errorHandlers, tokenHandler } from "./mocks/handlers";
+import { mockHandlers, errorHandlers } from "./mocks/handlers";
 
 const mockAblyClient = new Ably.Realtime({
   authUrl: "/token",
@@ -24,7 +24,7 @@ const meta: Meta<typeof PubSubMessages> = {
   parameters: {
     layout: "centered",
     msw: {
-      handlers: [...tokenHandler, ...pubSubHandlers],
+      handlers: [...mockHandlers],
     },
   },
 };
@@ -37,7 +37,7 @@ export const Default: Story = {};
 export const WithServerError: Story = {
   parameters: {
     msw: {
-      handlers: [...tokenHandler, ...errorHandlers],
+      handlers: [...mockHandlers, ...errorHandlers],
     },
   },
 };
