@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Chats } from "./Chats";
 import { http, graphql, HttpResponse } from "msw";
-import { mockChats } from "./mockData";
+import { mockChats } from "./mocks/mockData";
 
 const meta: Meta<typeof Chats> = {
   title: "RoyComponents/Chats",

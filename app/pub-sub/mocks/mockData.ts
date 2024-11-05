@@ -44,4 +44,4 @@ export const mockChats = {
       isActive: false,
     },
   ],
-};
+}; 
