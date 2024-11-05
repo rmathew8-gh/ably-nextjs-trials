@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Messages } from "./Messages";
 import { graphql, HttpResponse } from "msw";
 import { mockMessages } from "./mocks/mockData";
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { MessagesProvider } from './MessagesProvider';
 
 const meta: Meta<typeof Messages> = {
   title: "RoyComponents/Messages",
@@ -42,12 +44,26 @@ export const WithMessages: Story = {
   },
 };
 
+const apolloClient = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: undefined // MSW will handle the requests
+});
+
 export const SingleMessage: Story = {
   parameters: {
     msw: {
       handlers: [createMessageHandler("single")],
     },
   },
+  decorators: [
+    (Story) => (
+      <ApolloProvider client={apolloClient}>
+        <MessagesProvider>
+          <Story />
+        </MessagesProvider>
+      </ApolloProvider>
+    ),
+  ],
 };
 
 export const LongMessages: Story = {
