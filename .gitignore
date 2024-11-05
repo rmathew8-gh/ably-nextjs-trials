@@ -36,3 +36,4 @@ yarn-error.log*
 next-env.d.ts
 /.env
 /pnpm-lock.yaml
+/app/pub-sub/side-menu-2.stories.tsx

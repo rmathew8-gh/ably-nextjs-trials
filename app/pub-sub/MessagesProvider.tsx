@@ -1,8 +1,8 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { ReactNode, createContext, useEffect, useState } from "react";
+import { useQuery, gql } from "@apollo/client";
 
 const GET_MESSAGES = gql`
-  query GetMessages {
+  query xGetMessages {
     messages {
       id
       content
@@ -25,7 +25,7 @@ interface MessagesContextType {
 
 export const MessagesContext = createContext<MessagesContextType>({
   messages: [],
-  loading: false
+  loading: false,
 });
 
 interface MessagesProviderProps {
@@ -33,15 +33,21 @@ interface MessagesProviderProps {
 }
 
 export function MessagesProvider({ children }: MessagesProviderProps) {
-  const { data, loading, error } = useQuery(GET_MESSAGES);
+  const { data, loading, error } = useQuery(GET_MESSAGES, {
+    onCompleted: (data) => console.log("Query completed:", data),
+    onError: (error) => console.error("Query error:", error),
+  });
 
+  debugger;
   return (
-    <MessagesContext.Provider value={{
-      messages: data?.messages || [],
-      loading,
-      error
-    }}>
+    <MessagesContext.Provider
+      value={{
+        messages: data?.messages || [],
+        loading,
+        error,
+      }}
+    >
       {children}
     </MessagesContext.Provider>
   );
-} 
+}
