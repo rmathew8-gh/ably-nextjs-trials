@@ -1,16 +1,20 @@
-// import * as React from "react";
-import { HelloWrapper } from "./HelloWrapper";
-import { graphql } from "msw";
+import { graphql, HttpResponse } from "msw";
 import Hello from "./Hello";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: "/api/graphql",
+  cache: new InMemoryCache(),
+});
 
 export default {
   title: "Hello",
   component: Hello,
   decorators: [
     (Story: React.ComponentType) => (
-      <HelloWrapper>
+      <ApolloProvider client={client}>
         <Story />
-      </HelloWrapper>
+      </ApolloProvider>
     ),
   ],
 };
@@ -22,36 +26,14 @@ export const SuccessState = {
   parameters: {
     msw: {
       handlers: [
-        graphql.query("YourQuery", ({ query, variables }) => {
-          return {
+        graphql.query("GetHelloData", () => {
+          return HttpResponse.json({
             data: {
               yourData: { name: "Mocked Data" },
             },
-          };
+          });
         }),
       ],
     },
   },
 };
-
-// export const LoadingState = Template.bind({});
-// LoadingState.parameters = {
-//   msw: {
-//     handlers: [
-//       graphql.query("YourQuery", (req, res, ctx) => {
-//         return res(ctx.delay("infinite"));
-//       }),
-//     ],
-//   },
-// };
-
-// export const ErrorState = Template.bind({});
-// ErrorState.parameters = {
-//   msw: {
-//     handlers: [
-//       graphql.query("YourQuery", (req, res, ctx) => {
-//         return res(ctx.errors([{ message: "Error fetching data" }]));
-//       }),
-//     ],
-//   },
-// };
