@@ -10,9 +10,27 @@ export default function MessagesList() {
   const messages: Message[] = [
     {
       id: '1',
-      name: 'Parker Amoro',
+      name: 'Parker Amoroso',
       lastMessage: 'Hey Parker',
       date: 'Nov 6'
+    },
+    {
+      id: '2', 
+      name: 'Sarah Chen',
+      lastMessage: 'Thanks for the update!',
+      date: 'Nov 5'
+    },
+    {
+      id: '3',
+      name: 'Mike Johnson',
+      lastMessage: 'See you tomorrow at the meeting',
+      date: 'Nov 5'
+    },
+    {
+      id: '4',
+      name: 'Emma Wilson',
+      lastMessage: 'The project looks great',
+      date: 'Nov 4'
     },
     // Add more messages as needed
   ];

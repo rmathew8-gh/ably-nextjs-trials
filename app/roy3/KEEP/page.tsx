@@ -1,5 +1,5 @@
-import MessagesLayout from './layout/MessagesLayout';
-import ChatView from './components/ChatView';
+import MessagesLayout from "./MessagesLayout";
+import ChatView from './Chats';
 
 export default function MessagesPage() {
   return (

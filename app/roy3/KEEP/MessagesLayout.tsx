@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import SearchBar from './SearchBar';
+import TabBar from './TabBar';
+import MessagesList from './MessagesList';
 
 interface MessagesLayoutProps {
   children: ReactNode;

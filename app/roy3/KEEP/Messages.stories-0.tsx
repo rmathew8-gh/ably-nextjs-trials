@@ -1,6 +1,6 @@
-import Messages, { MessagesProvider, MessagesProps } from "./Messages";
+import { graphql, HttpResponse } from "msw";
+import Messages from "./Messages";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { mockHandlers } from "./handlers";
 
 const client = new ApolloClient({
   uri: "/api/graphql",
@@ -8,29 +8,32 @@ const client = new ApolloClient({
 });
 
 export default {
-  title: "Roy/Messages",
+  title: "Roy3/Messages",
   component: Messages,
   decorators: [
     (Story: React.ComponentType) => (
       <ApolloProvider client={client}>
-        <MessagesProvider>
-          <Story />
-        </MessagesProvider>
+        <Story />
       </ApolloProvider>
     ),
   ],
 };
 
-const Template = (args: MessagesProps) => <Messages {...args} />;
+const Template = (args: { id: number; name: string }) => <Messages {...args} />;
 
 export const SuccessState = {
   render: Template,
-  args: {
-    name: "Default Name",
-  },
   parameters: {
     msw: {
-      handlers: [mockHandlers],
+      handlers: [
+        graphql.query("GetMessagesData", () => {
+          return HttpResponse.json({
+            data: {
+              yourData: { name: "Mocked Data" },
+            },
+          });
+        }),
+      ],
     },
   },
 };

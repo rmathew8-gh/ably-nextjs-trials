@@ -1,25 +1,57 @@
-import { gql, useQuery } from '@apollo/client';
+import { createContext, useContext, ReactNode } from "react";
+import { gql, useQuery } from "@apollo/client";
+
+export interface MessagesProps {
+  name?: string;
+}
 
 const GET_HELLO_DATA = gql`
-  query GetMessagesData {
-    yourData {
-      name
+  query GetMessages {
+    messages {
+      text
     }
   }
 `;
 
-interface MessagesProps {
-  name?: string;
+const MessagesContext = createContext<{
+  loading: boolean;
+  error?: Error;
+  messages: Array<{ text: string }>;
+}>({
+  loading: true,
+  messages: [],
+});
+
+export function MessagesProvider({ children }: { children: ReactNode }) {
+  const { loading, error, data } = useQuery(GET_HELLO_DATA);
+
+  return (
+    <MessagesContext.Provider
+      value={{
+        loading,
+        error,
+        messages: data?.messages || [],
+      }}
+    >
+      {children}
+    </MessagesContext.Provider>
+  );
 }
 
-const Messages: React.FC<MessagesProps> = ({ name: defaultName = "World" }) => {
-  const { loading, error, data } = useQuery(GET_HELLO_DATA);
+const Messages: React.FC<MessagesProps> = () => {
+  const { loading, error, messages } = useContext(MessagesContext);
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>Error: {error.message}</h1>;
 
-  const name = data?.yourData?.name || defaultName;
-  return <h1>Messages, {name}!</h1>;
+  return (
+    <div>
+      <h1>Messages:</h1>
+      {messages.map((message, index) => (
+        <div key={index}>{message.text}</div>
+      ))}
+    </div>
+  );
 };
 
 export default Messages;
