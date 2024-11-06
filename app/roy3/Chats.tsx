@@ -52,7 +52,6 @@ const Chats: React.FC<ChatsProps> = () => {
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>Error: {error.message}</h1>;
 
-  debugger;
   return (
     <div>
       <h1>Chats:</h1>

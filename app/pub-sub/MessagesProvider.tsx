@@ -38,7 +38,6 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
     onError: (error) => console.error("Query error:", error),
   });
 
-  debugger;
   return (
     <MessagesContext.Provider
       value={{
