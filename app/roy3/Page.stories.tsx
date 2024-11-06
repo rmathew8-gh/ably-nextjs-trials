@@ -1,37 +1,23 @@
+import type { Meta, StoryObj } from "@storybook/react";
 import Page from "./Page";
-import { ChatsProvider } from "./Chats";
-import { MessagesProvider } from "./Messages";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { withProviders } from "./test-utils";
 import { mockHandlers } from "./handlers";
 
-const client = new ApolloClient({
-  uri: "/api/graphql",
-  cache: new InMemoryCache(),
-});
-
-const PageComponent = (Story: React.ComponentType) => (
-  <ApolloProvider client={client}>
-    <ChatsProvider>
-      <MessagesProvider>
-        <Story />
-      </MessagesProvider>
-    </ChatsProvider>
-  </ApolloProvider>
-);
-
-export default {
+const meta: Meta<typeof Page> = {
   title: "Roy/Page",
   component: Page,
-  decorators: [PageComponent],
+  decorators: [withProviders],
+  parameters: {
+    // Default parameters that apply to all stories
+    layout: "fullscreen",
+  },
 };
 
-const Template = () => <Page />;
+export default meta;
 
-export const Default = {
-  render: Template,
-  args: {
-    name: "Default Name",
-  },
+type Story = StoryObj<typeof Page>;
+
+export const Default: Story = {
   parameters: {
     msw: {
       handlers: [mockHandlers],
