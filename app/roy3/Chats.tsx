@@ -6,13 +6,17 @@ export interface ChatsProps {
 }
 
 export interface Chat {
+  id: string;
   text: string;
+  username: string;
 }
 
 const GET_HELLO_DATA = gql`
   query GetChats {
     chats {
+      id
       text
+      username
     }
   }
 `;
@@ -46,13 +50,16 @@ const Chats: React.FC<ChatsProps> = () => {
   const { loading, error, chats } = useContext(ChatsContext);
 
   if (loading) return <h1>Loading...</h1>;
-  if (error) return <h1>Error: {error.chat}</h1>;
+  if (error) return <h1>Error: {error.message}</h1>;
 
+  debugger;
   return (
     <div>
       <h1>Chats:</h1>
-      {chats.map((chat: Chat, index) => (
-        <div key={index}>{chat.text}</div>
+      {chats.map((chat: Chat) => (
+        <div key={chat.id}>
+          id: {chat.id}; {chat.text} by {chat.username}
+        </div>
       ))}
     </div>
   );

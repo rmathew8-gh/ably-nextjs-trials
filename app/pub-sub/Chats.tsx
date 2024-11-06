@@ -6,6 +6,8 @@ interface ChatsProps {
     id: string;
     label: string;
     isActive: boolean;
+    username: string;
+    timestamp: string;
   }>;
 }
 
@@ -19,6 +21,8 @@ export const Chats = ({ chatElems: initialChats = [] }: ChatsProps) => {
           id
           label
           isActive
+          username
+          timestamp
         }
       }
     `;
@@ -54,6 +58,8 @@ export const Chats = ({ chatElems: initialChats = [] }: ChatsProps) => {
                 id={chatElem.id}
                 label={chatElem.label}
                 isActive={chatElem.isActive}
+                username={chatElem.username}
+                timestamp={chatElem.timestamp}
               />
             ))}
           </div>

@@ -16,9 +16,24 @@ export const mockHandlers = [
     return HttpResponse.json({
       data: {
         chats: [
-          { text: "First chat" },
-          { text: "Second chat" },
-          { text: "Third chat" },
+          {
+            id: 21,
+            text: "First chat (from alice)",
+            username: "Alice",
+            timestamp: "2024-03-20T10:00:00Z",
+          },
+          {
+            id: 23,
+            text: "Second chat (by Bob)",
+            username: "Bob",
+            timestamp: "2024-03-20T10:01:00Z",
+          },
+          {
+            id: 44,
+            text: "Third chat (Charlie steps in)",
+            username: "Charlie",
+            timestamp: "2024-03-20T10:02:00Z",
+          },
         ],
       },
     });
