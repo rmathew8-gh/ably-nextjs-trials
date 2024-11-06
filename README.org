@@ -1,0 +1,2 @@
+* Intro
+Copied from Ably serverless WebSockets and Next.js fundamentals starter kit
