@@ -1,11 +1,16 @@
+import "../global.css";
 import Messages, { MessagesProvider, MessagesProps } from "./Messages";
 import Chats, { ChatsProvider, ChatsProps } from "./Chats";
 
 export default function Page() {
   return (
-    <>
-      <Messages />
-      <Chats />
-    </>
+    <div className="page-container">
+      <div className="page-column">
+        <Messages />
+      </div>
+      <div className="page-column">
+        <Chats />
+      </div>
+    </div>
   );
 }
