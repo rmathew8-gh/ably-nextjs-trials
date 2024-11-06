@@ -12,4 +12,15 @@ export const mockHandlers = [
       },
     });
   }),
+  graphql.query("GetChats", () => {
+    return HttpResponse.json({
+      data: {
+        chats: [
+          { text: "First chat" },
+          { text: "Second chat" },
+          { text: "Third chat" },
+        ],
+      },
+    });
+  }),
 ];

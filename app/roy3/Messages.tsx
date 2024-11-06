@@ -5,6 +5,10 @@ export interface MessagesProps {
   name?: string;
 }
 
+export interface Message {
+  text: string;
+}
+
 const GET_HELLO_DATA = gql`
   query GetMessages {
     messages {
@@ -16,7 +20,7 @@ const GET_HELLO_DATA = gql`
 const MessagesContext = createContext<{
   loading: boolean;
   error?: Error;
-  messages: Array<{ text: string }>;
+  messages: Message[];
 }>({
   loading: true,
   messages: [],
@@ -47,7 +51,7 @@ const Messages: React.FC<MessagesProps> = () => {
   return (
     <div>
       <h1>Messages:</h1>
-      {messages.map((message, index) => (
+      {messages.map((message: Message, index) => (
         <div key={index}>{message.text}</div>
       ))}
     </div>
