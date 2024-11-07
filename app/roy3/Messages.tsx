@@ -25,10 +25,12 @@ export const MessagesContext = createContext<{
   error?: Error;
   messages: Message[];
   addNewMessage: (newMessage: Message) => void;
+  chatId?: string;
 }>({
   loading: true,
   messages: [],
   addNewMessage: () => {},
+  chatId: undefined,
 });
 
 export function MessagesContextProvider({
@@ -57,6 +59,7 @@ export function MessagesContextProvider({
         error,
         messages: combinedMessages,
         addNewMessage,
+        chatId,
       }}
     >
       {children}
@@ -73,14 +76,14 @@ const Messages: React.FC<MessagesProps> = ({ chatId }) => {
 };
 
 const MessagesContent: React.FC = () => {
-  const { loading, error, messages } = useContext(MessagesContext);
+  const { loading, error, messages, chatId } = useContext(MessagesContext);
 
   if (loading) return <h1>Loading...</h1>;
   if (error) return <h1>Error: {error.message}</h1>;
 
   return (
     <div>
-      <h1>Messages:</h1>
+      <h1>Messages{chatId ? ` (Chat ${chatId})` : ''}</h1>
       {messages.map((message: Message, index) => (
         <MessageCard key={index} message={message} />
       ))}
