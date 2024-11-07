@@ -4,6 +4,8 @@ import { Chat, ChatCard } from "./ChatCard";
 
 export interface ChatsProps {
   name?: string;
+  selectedChatId?: string;
+  onChatSelect?: (chatId: string) => void;
 }
 
 const GET_HELLO_DATA = gql`
@@ -41,7 +43,7 @@ export function ChatsProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const Chats: React.FC<ChatsProps> = () => {
+const Chats: React.FC<ChatsProps> = ({ selectedChatId, onChatSelect }) => {
   const { loading, error, chats } = useContext(ChatsContext);
 
   if (loading) return <h1>Loading...</h1>;
@@ -51,7 +53,12 @@ const Chats: React.FC<ChatsProps> = () => {
     <div>
       <h1>Chats:</h1>
       {chats.map((chat: Chat) => (
-        <ChatCard key={chat.id} chat={chat} />
+        <ChatCard 
+          key={chat.id} 
+          chat={chat}
+          isSelected={chat.id === selectedChatId}
+          onClick={() => onChatSelect?.(chat.id)}
+        />
       ))}
     </div>
   );

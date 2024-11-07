@@ -1,15 +1,10 @@
-import {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  SetStateAction,
-} from "react";
+import { createContext, useState, useContext, ReactNode } from "react";
 import { gql, useQuery } from "@apollo/client";
-import MessageCard from './MessageCard';
+import MessageCard from "./MessageCard";
 
 export interface MessagesProps {
   name?: string;
+  chatId?: string;
 }
 
 export interface Message {
@@ -18,8 +13,8 @@ export interface Message {
 }
 
 const GET_HELLO_DATA = gql`
-  query GetMessages {
-    messages {
+  query GetMessages($chatId: ID) {
+    messages(chatId: $chatId) {
       text
     }
   }
@@ -36,8 +31,17 @@ export const MessagesContext = createContext<{
   addNewMessage: () => {},
 });
 
-export function MessagesContextProvider({ children }: { children: ReactNode }) {
-  const { loading, error, data } = useQuery(GET_HELLO_DATA);
+export function MessagesContextProvider({
+  children,
+  chatId,
+}: {
+  children: ReactNode;
+  chatId?: string;
+}) {
+  const { loading, error, data } = useQuery(GET_HELLO_DATA, {
+    variables: { chatId },
+    skip: !chatId,
+  });
   const [newMessages, setNewMessages] = useState<Message[]>([]);
 
   function addNewMessage(newMessage: Message) {
@@ -60,7 +64,15 @@ export function MessagesContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const Messages: React.FC<MessagesProps> = () => {
+const Messages: React.FC<MessagesProps> = ({ chatId }) => {
+  return (
+    <MessagesContextProvider chatId={chatId}>
+      <MessagesContent />
+    </MessagesContextProvider>
+  );
+};
+
+const MessagesContent: React.FC = () => {
   const { loading, error, messages } = useContext(MessagesContext);
 
   if (loading) return <h1>Loading...</h1>;
