@@ -1,6 +1,7 @@
 import "../global.css";
 import Messages, { MessagesProvider, MessagesProps } from "./Messages";
 import Chats, { ChatsProvider, ChatsProps } from "./Chats";
+import EditBox from "./EditBox";
 
 export default function Page() {
   return (
@@ -12,7 +13,9 @@ export default function Page() {
         <div className="upper-section boxed">
           <Chats />
         </div>
-        <div className="lower-section boxed">editor goes here</div>
+        <div className="lower-section boxed">
+          <EditBox />
+        </div>
       </div>
     </div>
   );
