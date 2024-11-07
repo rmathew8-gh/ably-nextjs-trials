@@ -71,4 +71,17 @@ export const mockHandlers = [
       },
     });
   }),
+  graphql.mutation("SendMessage", ({ variables }) => {
+    // Simulate a successful message save
+    return HttpResponse.json({
+      data: {
+        sendMessage: {
+          id: Math.floor(Math.random() * 1000), // Generate random message ID
+          text: variables.text,
+          timestamp: new Date().toISOString(),
+          username: variables.username || "Anonymous"
+        }
+      }
+    });
+  }),
 ];
