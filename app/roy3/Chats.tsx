@@ -1,14 +1,9 @@
 import { createContext, useContext, ReactNode } from "react";
 import { gql, useQuery } from "@apollo/client";
+import { Chat, ChatCard } from "./ChatCard";
 
 export interface ChatsProps {
   name?: string;
-}
-
-export interface Chat {
-  id: string;
-  text: string;
-  username: string;
 }
 
 const GET_HELLO_DATA = gql`
@@ -56,9 +51,7 @@ const Chats: React.FC<ChatsProps> = () => {
     <div>
       <h1>Chats:</h1>
       {chats.map((chat: Chat) => (
-        <div key={chat.id}>
-          id: {chat.id}; {chat.text} by {chat.username}
-        </div>
+        <ChatCard key={chat.id} chat={chat} />
       ))}
     </div>
   );

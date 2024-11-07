@@ -59,7 +59,24 @@ export function MessagesContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
-const Messages: React.FC<MessagesProps> = (/* pass props from parent */) => {
+// Add this new component above the Messages component
+const MessageCard: React.FC<{ message: Message }> = ({ message }) => {
+  return (
+    <div
+      style={{
+        padding: '1rem',
+        margin: '0.5rem 0',
+        borderRadius: '8px',
+        backgroundColor: '#f5f5f5',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      {message.text}
+    </div>
+  );
+};
+
+const Messages: React.FC<MessagesProps> = () => {
   const { loading, error, messages } = useContext(MessagesContext);
 
   if (loading) return <h1>Loading...</h1>;
@@ -69,7 +86,7 @@ const Messages: React.FC<MessagesProps> = (/* pass props from parent */) => {
     <div>
       <h1>Messages:</h1>
       {messages.map((message: Message, index) => (
-        <div key={index}>{message.text}</div>
+        <MessageCard key={index} message={message} />
       ))}
     </div>
   );
