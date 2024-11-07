@@ -18,12 +18,14 @@ interface Message {
 }
 
 interface MessagesContextType {
+  addNewMessage: (message: string) => void;
   messages: Message[];
   loading: boolean;
   error?: Error;
 }
 
 export const MessagesContext = createContext<MessagesContextType>({
+  addNewMessage: () => {},
   messages: [],
   loading: false,
 });
@@ -41,6 +43,7 @@ export function MessagesProvider({ children }: MessagesProviderProps) {
   return (
     <MessagesContext.Provider
       value={{
+        addNewMessage: () => {},
         messages: data?.messages || [],
         loading,
         error,

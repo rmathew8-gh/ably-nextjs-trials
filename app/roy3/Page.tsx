@@ -1,5 +1,5 @@
 import "../global.css";
-import Messages, { MessagesProvider, MessagesProps } from "./Messages";
+import Messages, { MessagesContextProvider, MessagesProps } from "./Messages";
 import Chats, { ChatsProvider, ChatsProps } from "./Chats";
 import EditBox from "./EditBox";
 
@@ -7,11 +7,11 @@ export default function Page() {
   return (
     <div className="page-container">
       <div className="page-column boxed">
-        <Messages />
+        <Chats />
       </div>
       <div className="page-column boxed">
         <div className="upper-section boxed">
-          <Chats />
+          <Messages />
         </div>
         <div className="lower-section boxed">
           <EditBox />
