@@ -4,7 +4,7 @@ import { withProviders } from "../../common/test-utils";
 import { mockHandlers } from "../../common/handlers";
 
 const meta: Meta<typeof Page> = {
-  title: "Roy/Page",
+  title: "Roy3/Page",
   component: Page,
   decorators: [withProviders],
   parameters: {
