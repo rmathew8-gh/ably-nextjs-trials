@@ -1,6 +1,6 @@
 import Messages, { MessagesProps } from "../Messages";
-import { withProviders } from "../test-utils";
-import { mockHandlers } from "../handlers";
+import { withProviders } from "../../common/test-utils";
+import { mockHandlers } from "../../common/handlers";
 
 export default {
   title: "Roy/Messages",

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Page from "../Page";
-import { withProviders } from "../test-utils";
-import { mockHandlers } from "../handlers";
+import { withProviders } from "../../common/test-utils";
+import { mockHandlers } from "../../common/handlers";
 
 const meta: Meta<typeof Page> = {
   title: "Roy/Page",

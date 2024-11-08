@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { ChatsProvider } from "./Chats";
-import { MessagesContextProvider } from "./Messages";
+import { ChatsProvider } from "../roy3/Chats";
+import { MessagesContextProvider } from "../roy3/Messages";
 import { ReactNode } from "react";
 
 // Shared Apollo Client instance
@@ -14,9 +14,7 @@ export const TestProviders = ({ children }: { children: ReactNode }) => {
   return (
     <ApolloProvider client={testClient}>
       <ChatsProvider>
-        <MessagesContextProvider>
-          {children}
-        </MessagesContextProvider>
+        <MessagesContextProvider>{children}</MessagesContextProvider>
       </ChatsProvider>
     </ApolloProvider>
   );
@@ -27,4 +25,4 @@ export const withProviders = (Story: React.ComponentType) => (
   <TestProviders>
     <Story />
   </TestProviders>
-); 
+);
