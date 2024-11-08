@@ -38,7 +38,7 @@ classDiagram
     MessagesContextProvider --> Message : contains[]
     Messages --> Message : displays[]
     Messages ..|> MessagesProps : implements
-```    
+```
 
 ## Relationship Diagram #2 (Messages)
 
@@ -94,7 +94,7 @@ classDiagram
     MessagesContextProvider ..> Message : manages
     Messages ..> MessagesProps : accepts
     MessageCard ..> Message : displays
-```    
+```
 
 ## Page Diagram
 
@@ -136,6 +136,54 @@ classDiagram
     Page --> Chats : contains
     Page --> Messages : contains
     Page --> EditBox : contains
+    Messages --> MessagesContext : consumes
+    EditBox --> MessagesContext : consumes
+    MessagesContext --> Message : contains[]
+```
+
+## Page Diagram #2
+
+```mermaid
+classDiagram
+    class Page {
+        +render(): JSX.Element
+    }
+
+    class ChatContext {
+        +selectedChatId: string | undefined
+        +setSelectedChatId(chatId: string): void
+    }
+
+    class Chats {
+        +onChatSelect?: (chatId: string) => void
+        +render(): JSX.Element
+    }
+
+    class Messages {
+        +render(): JSX.Element
+    }
+
+    class EditBox {
+        +render(): JSX.Element
+    }
+
+    class MessagesContext {
+        +loading: boolean
+        +error?: Error
+        +messages: Message[]
+        +addNewMessage(message: Message): void
+    }
+
+    class Message {
+        +text: string
+    }
+
+    Page --> ChatContext : provides
+    Page --> Chats : contains
+    Page --> Messages : contains
+    Page --> EditBox : contains
+    Chats --> ChatContext : consumes
+    Messages --> ChatContext : consumes
     Messages --> MessagesContext : consumes
     EditBox --> MessagesContext : consumes
     MessagesContext --> Message : contains[]
