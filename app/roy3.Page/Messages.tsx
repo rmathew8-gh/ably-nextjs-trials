@@ -48,7 +48,7 @@ export function MessagesContextProvider({
   children: ReactNode;
   chatId?: string;
 }) {
-  console.log('MessagesContextProvider chatId:', chatId);
+  console.log("MessagesContextProvider chatId:", chatId);
   const { loading, error, data } = useQuery(GET_HELLO_DATA, {
     variables: { chatId },
     skip: chatId === undefined,
