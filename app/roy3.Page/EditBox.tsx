@@ -18,14 +18,19 @@ export default function EditBox({ chatId }: EditBoxProps) {
 
   return (
     <div>
-      <h2 className="edit-box-title">Message Input {chatId || ""}</h2>
+      <h2 className="edit-box-title">Message Input {chatId ? chatId : ""}</h2>
       <form className="edit-box" onSubmit={handleSubmit}>
         <textarea
           name="message"
           className="edit-textarea"
           placeholder="Enter your message..."
+          disabled={!chatId}
         />
-        <button type="submit" className="edit-submit">
+        <button
+          type="submit"
+          className="edit-submit disabled:bg-gray-300"
+          disabled={!chatId}
+        >
           Submit
         </button>
       </form>
