@@ -51,8 +51,9 @@ export function MessagesContextProvider({
   console.log('MessagesContextProvider chatId:', chatId);
   const { loading, error, data } = useQuery(GET_HELLO_DATA, {
     variables: { chatId },
-    skip: !chatId,
+    skip: chatId === undefined,
   });
+
   const [newMessages, setNewMessages] = useState<Message[]>([]);
 
   const [sendMessage] = useMutation(SEND_MESSAGE);
@@ -69,7 +70,7 @@ export function MessagesContextProvider({
           },
         });
       } catch (error) {
-        console.error('Failed to send message:', error);
+        console.error("Failed to send message:", error);
         // You might want to handle the error appropriately here
       }
     }
@@ -92,14 +93,6 @@ export function MessagesContextProvider({
   );
 }
 
-const Messages: React.FC<MessagesProps> = ({ chatId }) => {
-  return (
-    <MessagesContextProvider chatId={chatId}>
-      <MessagesContent />
-    </MessagesContextProvider>
-  );
-};
-
 const MessagesContent: React.FC = () => {
   const { loading, error, messages, chatId } = useContext(MessagesContext);
 
@@ -108,11 +101,19 @@ const MessagesContent: React.FC = () => {
 
   return (
     <div>
-      <h1>Messages{chatId ? ` (Chat ${chatId})` : ''}</h1>
+      <h1>Messages{chatId ? ` (Chat ${chatId})` : ""}</h1>
       {messages.map((message: Message, index) => (
         <MessageCard key={index} message={message} />
       ))}
     </div>
+  );
+};
+
+const Messages: React.FC<MessagesProps> = ({ chatId }) => {
+  return (
+    <MessagesContextProvider chatId={chatId}>
+      <MessagesContent />
+    </MessagesContextProvider>
   );
 };
 

@@ -10,9 +10,9 @@ export default function Page() {
   return (
     <div className="page-container">
       <div className="page-column boxed">
-        <Chats 
+        <Chats
           selectedChatId={selectedChatId}
-          onChatSelect={(chatId) => setSelectedChatId(chatId)} 
+          onChatSelect={(chatId) => setSelectedChatId(chatId)}
         />
       </div>
       <div className="page-column boxed">
@@ -20,7 +20,7 @@ export default function Page() {
           <Messages chatId={selectedChatId} />
         </div>
         <div className="lower-section boxed">
-          <EditBox />
+          <EditBox chatId={selectedChatId} />
         </div>
       </div>
     </div>
