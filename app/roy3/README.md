@@ -1,142 +1,71 @@
-## Relationship Diagram (Messages)
+## Component Relationship Diagram
 
 ```mermaid
+
 classDiagram
-    class MessagesProps {
-        +name?: string
+    class Chat {
+        +string id
+        +string text
+        +string username
     }
 
-    class Message {
-        +text: string
-    }
-
-    class MessagesContext {
-        +loading: boolean
-        +error?: Error
-        +messages: Message[]
-        +addNewMessage(newMessage: Message): void
-    }
-
-    class MessagesContextProvider {
-        -loading: boolean
-        -error?: Error
-        -data: any
-        -newMessages: Message[]
-        +addNewMessage(newMessage: Message): void
-        +render(): JSX.Element
-    }
-
-    class Messages {
-        +loading: boolean
-        +error?: Error
-        +messages: Message[]
-        +render(): JSX.Element
-    }
-
-    MessagesContextProvider --> MessagesContext : provides
-    Messages --> MessagesContext : consumes
-    MessagesContextProvider --> Message : contains[]
-    Messages --> Message : displays[]
-    Messages ..|> MessagesProps : implements
-```    
-
-## Relationship Diagram #2 (Messages)
-
-```mermaid
-classDiagram
-    class Messages {
-        +MessagesProps props
+    class ChatCard {
+        +Chat chat
+        +boolean isSelected
+        +function onClick()
         +render()
     }
 
-    class MessagesProps {
-        +string? name
-        +string? chatId
+    class Chats {
+        +string name
+        +string selectedChatId
+        +function onChatSelect()
+        +render()
+    }
+
+    class ChatsContext {
+        +boolean loading
+        +Error error
+        +Chat[] chats
     }
 
     class Message {
         +string text
     }
 
-    class MessagesContext {
-        +boolean loading
-        +Error? error
-        +Message[] messages
-        +function addNewMessage
-        +string? chatId
-    }
-
-    class MessagesContextProvider {
-        +ReactNode children
-        +string? chatId
-        -Message[] newMessages
-        -function setNewMessages
-        +function addNewMessage()
-    }
-
-    class MessagesContent {
-        -boolean loading
-        -Error? error
-        -Message[] messages
-        -string? chatId
+    class MessageCard {
+        +Message message
         +render()
     }
 
-    class MessageCard {
-        +Message message
-    }
-
-    Messages --> MessagesContextProvider : uses
-    Messages --> MessagesContent : renders
-    MessagesContextProvider --> MessagesContext : provides
-    MessagesContent --> MessageCard : renders
-    MessagesContent --> MessagesContext : consumes
-    MessagesContextProvider ..> Message : manages
-    Messages ..> MessagesProps : accepts
-    MessageCard ..> Message : displays
-```    
-
-## Page Diagram
-
-```mermaid
-classDiagram
-    class Page {
-        -selectedChatId: string | undefined
-        -setSelectedChatId(): void
-        +render(): JSX.Element
-    }
-
-    class Chats {
-        +selectedChatId?: string
-        +onChatSelect?: (chatId: string) => void
-        +render(): JSX.Element
-    }
-
     class Messages {
-        +chatId?: string
-        +render(): JSX.Element
-    }
-
-    class EditBox {
-        +render(): JSX.Element
+        +string name
+        +string chatId
+        +render()
     }
 
     class MessagesContext {
-        +loading: boolean
-        +error?: Error
-        +messages: Message[]
-        +addNewMessage(message: Message): void
-        +chatId?: string
+        +boolean loading
+        +Error error
+        +Message[] messages
+        +function addNewMessage()
+        +string chatId
     }
 
-    class Message {
-        +text: string
+    class EditBox {
+        +string chatId
+        +string text
+        +function handleSubmit()
+        +function setText()
+        +render()
     }
 
-    Page --> Chats : contains
-    Page --> Messages : contains
-    Page --> EditBox : contains
-    Messages --> MessagesContext : consumes
-    EditBox --> MessagesContext : consumes
-    MessagesContext --> Message : contains[]
+    Chat --* ChatCard : contains
+    ChatCard --* Chats : renders
+    ChatsContext --* Chats : provides data
+    Message --* MessageCard : contains
+    MessageCard --* Messages : renders
+    MessagesContext --* Messages : provides data
+    MessagesContext --* EditBox : provides addNewMessage
+
 ```
