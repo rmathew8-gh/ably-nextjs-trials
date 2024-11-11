@@ -5,8 +5,7 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const mockHandlers = [
   graphql.query("GetMessages", async ({ variables }) => {
-    await delay(1000); // Add 1 second delay
-    const chatId = variables.chatId || "default";
+    await delay(600); // Add small delay
 
     const allMessages = [
       { id: 1, text: "Hey everyone! Who's up for a coding challenge? 🚀" },
