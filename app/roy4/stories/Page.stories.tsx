@@ -4,6 +4,11 @@ import { MessagesProvider } from "../contexts/MessagesContext";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { mockHandlers } from "../../common/handlers";
 
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+
+loadDevMessages();
+loadErrorMessages();
+
 export const apolloClient = new ApolloClient({
   uri: "/api/graphql",
   cache: new InMemoryCache(),

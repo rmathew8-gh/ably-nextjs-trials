@@ -8,6 +8,7 @@ export interface MessagesProps {
 }
 
 export interface Message {
+  id: string;
   text: string;
   // TODO: add other fields
 }
@@ -15,6 +16,7 @@ export interface Message {
 const GET_HELLO_DATA = gql`
   query GetMessages($chatId: ID) {
     messages(chatId: $chatId) {
+      id
       text
     }
   }
@@ -23,6 +25,7 @@ const GET_HELLO_DATA = gql`
 const SEND_MESSAGE = gql`
   mutation SendMessage($chatId: ID!, $text: String!) {
     sendMessage(chatId: $chatId, text: $text) {
+      id
       text
     }
   }
@@ -102,8 +105,8 @@ const MessagesContent: React.FC = () => {
   return (
     <div>
       <h1>Messages{chatId ? ` (Chat ${chatId})` : ""}</h1>
-      {messages.map((message: Message, index) => (
-        <MessageCard key={index} message={message} />
+      {messages.map((message: Message) => (
+        <MessageCard key={message.id} message={message} />
       ))}
     </div>
   );
