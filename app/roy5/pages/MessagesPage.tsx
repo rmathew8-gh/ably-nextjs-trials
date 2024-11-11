@@ -48,7 +48,12 @@ export const MessagesPage: React.FC = () => {
         <h1 className="text-xl font-semibold text-gray-800">Messages</h1>
       </header>
       <main className="h-[calc(100vh-4rem)] overflow-y-auto">
-        <MessageList messages={messages} loading={loading} error={error} />
+        <MessageList 
+          messages={messages} 
+          loading={loading} 
+          error={error}
+          channelName="General"
+        />
       </main>
     </div>
   );
