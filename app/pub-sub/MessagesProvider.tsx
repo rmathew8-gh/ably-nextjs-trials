@@ -2,11 +2,17 @@ import { ReactNode, createContext, useEffect, useState } from "react";
 import { useQuery, gql } from "@apollo/client";
 
 const GET_MESSAGES = gql`
-  query xGetMessages {
-    messages {
-      id
-      content
-      timestamp
+  query GetMessages($chatId: ID) {
+    messages(chatId: $chatId) {
+      text
+    }
+  }
+`;
+
+const SEND_MESSAGE = gql`
+  mutation SendMessage($chatId: ID!, $text: String!) {
+    sendMessage(chatId: $chatId, text: $text) {
+      text
     }
   }
 `;

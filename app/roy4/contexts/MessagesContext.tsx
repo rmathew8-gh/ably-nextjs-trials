@@ -1,5 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { Message } from '../types/Message';
+import { createContext, useContext, useState, useEffect } from "react";
+import { Message } from "../types/Message";
+import { useQuery, gql } from "@apollo/client";
 
 interface MessagesContextType {
   loading: boolean;
@@ -9,33 +10,43 @@ interface MessagesContextType {
   chatId?: string;
 }
 
-const MessagesContext = createContext<MessagesContextType | undefined>(undefined);
+const MessagesContext = createContext<MessagesContextType | undefined>(
+  undefined
+);
+
+const GET_MESSAGES = gql`
+  query GetMessages($chatId: ID!) {
+    messages(chatId: $chatId) {
+      id
+      text
+      # Add other message fields you need
+    }
+  }
+`;
 
 export const MessagesProvider: React.FC<{
   children: React.ReactNode;
   chatId?: string;
 }> = ({ children, chatId }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<Error>();
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const { loading, error, data } = useQuery(GET_MESSAGES, {
+    variables: { chatId },
+    skip: !chatId,
+  });
+
   useEffect(() => {
-    if (chatId) {
-      setLoading(true);
-      // Simulate API call
-      setTimeout(() => {
-        setMessages([{ text: 'Hello' }, { text: 'World' }]);
-        setLoading(false);
-      }, 1000);
+    if (data?.messages) {
+      setMessages(data.messages);
     }
-  }, [chatId]);
+  }, [data]);
 
   const addNewMessage = (message: Message) => {
-    setMessages(prev => [...prev, message]);
+    setMessages((prev) => [...prev, message]);
   };
 
   return (
-    <MessagesContext.Provider 
+    <MessagesContext.Provider
       value={{ loading, error, messages, addNewMessage, chatId }}
     >
       {children}
@@ -46,7 +57,7 @@ export const MessagesProvider: React.FC<{
 export const useMessages = () => {
   const context = useContext(MessagesContext);
   if (context === undefined) {
-    throw new Error('useMessages must be used within a MessagesProvider');
+    throw new Error("useMessages must be used within a MessagesProvider");
   }
   return context;
-}; 
+};
