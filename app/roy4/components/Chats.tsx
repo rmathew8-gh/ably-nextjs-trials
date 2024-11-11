@@ -1,28 +1,42 @@
+import { gql, useQuery } from "@apollo/client";
+import { Chat, ChatCard } from "./ChatCard";
+
 interface ChatsProps {
   selectedChatId?: string;
   onChatSelect?: (chatId: string) => void;
 }
 
-export const Chats: React.FC<ChatsProps> = ({ selectedChatId, onChatSelect }) => {
-  const mockChats = [
-    { id: '1', name: 'Chat 1' },
-    { id: '2', name: 'Chat 2' },
-    { id: '3', name: 'Chat 3' },
-  ];
+const GET_HELLO_DATA = gql`
+  query GetChats {
+    chats {
+      id
+      text
+      username
+    }
+  }
+`;
 
+export const Chats: React.FC<ChatsProps> = ({
+  selectedChatId,
+  onChatSelect,
+}) => {
+  const { loading, error, data } = useQuery(GET_HELLO_DATA);
+
+  if (loading) return <h1>Loading...</h1>;
+  if (error) return <h1>Error: {error.message}</h1>;
+
+  debugger;
   return (
-    <div className="p-4">
-      {mockChats.map(chat => (
-        <div
+    <div>
+      <h1>Chats:</h1>
+      {data?.chats?.map((chat: Chat) => (
+        <ChatCard
           key={chat.id}
-          className={`p-2 cursor-pointer rounded ${
-            selectedChatId === chat.id ? 'bg-blue-100' : 'hover:bg-gray-100'
-          }`}
+          chat={chat}
+          isSelected={chat.id === selectedChatId}
           onClick={() => onChatSelect?.(chat.id)}
-        >
-          {chat.name}
-        </div>
+        />
       ))}
     </div>
   );
-}; 
+};
