@@ -19,7 +19,7 @@ export const Messages: React.FC<MessagesProps> = ({ chatId }) => {
     <div className="p-4">
       {messages.map((message, index) => (
         <div key={index} className="mb-2 p-2 bg-gray-100 rounded">
-          {message.text}
+          {message.id}: {message.text}
         </div>
       ))}
     </div>

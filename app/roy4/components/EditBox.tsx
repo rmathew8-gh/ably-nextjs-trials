@@ -9,7 +9,7 @@ export const EditBox: React.FC = () => {
     e.preventDefault();
     if (!text.trim() || !chatId) return;
 
-    addNewMessage({ text });
+    addNewMessage({ id: Date.now(), text });
     setText("");
   };
 
