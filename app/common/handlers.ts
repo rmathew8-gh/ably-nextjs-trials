@@ -1,7 +1,11 @@
 import { graphql, HttpResponse } from "msw";
 
+// Add delay utility at the top
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export const mockHandlers = [
-  graphql.query("GetMessages", ({ variables }) => {
+  graphql.query("GetMessages", async ({ variables }) => {
+    await delay(1000); // Add 1 second delay
     const chatId = variables.chatId || "default";
 
     const allMessages = [
