@@ -1,14 +1,27 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Page } from "../Page";
-import { withProviders } from "../../common/test-utils";
+import { MessagesProvider } from "../contexts/MessagesContext";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { mockHandlers } from "../../common/handlers";
+
+export const apolloClient = new ApolloClient({
+  uri: "/api/graphql",
+  cache: new InMemoryCache(),
+});
 
 const meta: Meta<typeof Page> = {
   title: "Roy4/Page",
   component: Page,
-  decorators: [withProviders],
+  decorators: [
+    (Story) => (
+      <ApolloProvider client={apolloClient}>
+        <MessagesProvider chatId="mock-chat-id">
+          <Story />
+        </MessagesProvider>
+      </ApolloProvider>
+    ),
+  ],
   parameters: {
-    // Default parameters that apply to all stories
     layout: "fullscreen",
   },
 };
