@@ -3,7 +3,7 @@ import { Message } from "../types/Message";
 import { MessagesContextType } from "../types/MessageTypes";
 
 const MessagesContext = createContext<MessagesContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export interface MessagesProviderProps {
@@ -12,6 +12,8 @@ export interface MessagesProviderProps {
   initialMessages?: Message[];
 }
 
+// MessagesProvider can be initialized with initialMessages
+// It then fetches additional messages from the remote.
 export const MessagesProvider: React.FC<MessagesProviderProps> = ({
   children,
   chatId,
@@ -42,11 +44,11 @@ export const MessagesProvider: React.FC<MessagesProviderProps> = ({
           },
         ];
 
-        setMessages(sampleMessages);
+        setMessages([...messages, ...sampleMessages]);
         setLoading(false);
       } catch (err) {
         setError(
-          err instanceof Error ? err : new Error("Failed to load messages")
+          err instanceof Error ? err : new Error("Failed to load messages"),
         );
         setLoading(false);
       }
