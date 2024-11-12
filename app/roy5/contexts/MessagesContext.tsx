@@ -1,11 +1,7 @@
 import { createContext, useContext, useState } from "react";
+import { Message } from "../types/Message";
 
-// Define Message type inline
-interface Message {
-  id: string;
-  text: string;
-}
-
+// arg-type for MessagesContext.Provider::value
 interface MessagesContextType {
   loading: boolean;
   error?: Error;
@@ -18,16 +14,18 @@ const MessagesContext = createContext<MessagesContextType | undefined>(
   undefined,
 );
 
-export const MessagesProvider: React.FC<{
-  children: React.ReactNode;
+export interface MessagesProviderProps {
+  children?: React.ReactNode;
   chatId?: string;
   initialMessages?: Message[];
-}> = ({ children, chatId }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    { id: "1", text: "Hello there!" },
-    { id: "2", text: "How are you?" },
-    { id: "3", text: "Welcome to the chat!" },
-  ]);
+}
+
+export const MessagesProvider: React.FC<MessagesProviderProps> = ({
+  children,
+  chatId,
+  initialMessages = [],
+}) => {
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
 
   const addNewMessage = (message: Message) => {
     setMessages((prev) => [...prev, message]);
