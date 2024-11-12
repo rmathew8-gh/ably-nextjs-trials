@@ -1,9 +1,25 @@
-import { graphql, HttpResponse } from "msw";
+import { graphql, http, HttpResponse } from "msw";
 
 // Add delay utility at the top
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const mockHandlers = [
+  // async version
+  http.get("/api/createTokenRequest", async ({ request }) => {
+    // Simulate server processing delay
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    return HttpResponse.json(
+      {
+        token: "mock.ably.token",
+        keyName: "mock.key",
+        timestamp: Date.now(),
+        nonce: "1234567890",
+        capability: { "*": ["*"] },
+      },
+      { status: 200 },
+    );
+  }),
+
   graphql.query("GetMessages", async ({ variables }) => {
     await delay(600); // Add small delay
 

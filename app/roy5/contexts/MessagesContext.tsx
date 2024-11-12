@@ -3,7 +3,7 @@ import { Message } from "../types/Message";
 import { MessagesContextType } from "../types/MessageTypes";
 import { Realtime } from 'ably';
 
-const MessagesContext = createContext<MessagesContextType | undefined>(
+export const MessagesContext = createContext<MessagesContextType | undefined>(
   undefined,
 );
 
