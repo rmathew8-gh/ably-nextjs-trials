@@ -1,17 +1,9 @@
 import { createContext, useContext, useState } from "react";
 import { Message } from "../types/Message";
-
-// arg-type for MessagesContext.Provider::value
-interface MessagesContextType {
-  loading: boolean;
-  error?: Error;
-  messages: Message[];
-  addNewMessage: (message: Message) => void;
-  chatId?: string;
-}
+import { MessagesContextType } from "../types/MessageTypes";
 
 const MessagesContext = createContext<MessagesContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export interface MessagesProviderProps {

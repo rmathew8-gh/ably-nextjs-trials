@@ -1,15 +1,8 @@
 import { Message } from "../types/Message";
-// import { useChannel } from "ably/react";
+import { MessageListProps } from "../types/MessageTypes";
 import { useMessages } from "../contexts/MessagesContext";
 import { AblyProvider } from "ably/react";
 import Ably from "ably";
-
-interface MessageListProps {
-  messages: Message[];
-  loading: boolean;
-  error?: Error;
-  channelName: string;
-}
 
 const client = new Ably.Realtime(
   "EMQ9Tw.HHx6Qw:Zq5gDfhVD9_Ovdv_VlZATtQ00l53iQEsuoTDvO2HgaE",
@@ -22,9 +15,9 @@ export const MessageList: React.FC<MessageListProps> = ({
   channelName,
 }) => {
   const {
-    messages: contextMessages, // "messages" renamed to "contextMessages"; avoid conflict w/"messages" arg above.
-    loading: contextLoading, // -do-
-    error: contextError, // -do-
+    messages: contextMessages,
+    loading: contextLoading,
+    error: contextError,
   } = useMessages();
 
   // // Prefer props over context for loading/error states if provided
