@@ -12,10 +12,14 @@ const meta: Meta<typeof MessageList> = {
           {
             id: 1,
             text: "Hello, welcome to the chat!",
+            // sender: "System",
+            timestamp: new Date(),
           },
           {
             id: 2,
             text: "How are you today?",
+            sender: "Alice",
+            // timestamp: new Date(),
           },
         ]}
       >

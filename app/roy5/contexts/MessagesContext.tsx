@@ -7,7 +7,7 @@ const MessagesContext = createContext<MessagesContextType | undefined>(
 );
 
 export interface MessagesProviderProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   chatId?: string;
   initialMessages?: Message[];
 }
