@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { Message } from "../types/Message";
 import { MessagesContextType } from "../types/MessageTypes";
+import { Realtime } from 'ably';
 
 const MessagesContext = createContext<MessagesContextType | undefined>(
   undefined,
@@ -26,36 +27,53 @@ export const MessagesProvider: React.FC<MessagesProviderProps> = ({
   useEffect(() => {
     const loadMessages = async () => {
       try {
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Initialize Ably
+        const ably = new Realtime({ 
+          authUrl: '/api/createTokenRequest', // You'll need to implement this endpoint
+          clientId: 'your-client-id' 
+        });
 
-        const sampleMessages: Message[] = [
-          {
-            id: 1,
-            text: "Hello, welcome to the chat!",
-            sender: "System",
-            timestamp: new Date(),
-          },
-          {
-            id: 2,
-            text: "How are you today?",
-            sender: "Alice",
-            timestamp: new Date(),
-          },
-        ];
+        // Get the channel
+        const channel = ably.channels.get(chatId || 'default-channel');
 
-        setMessages([...messages, ...sampleMessages]);
+        // Subscribe to messages
+        await channel.subscribe('message', (ablyMessage) => {
+          const message: Message = {
+            id: ablyMessage.id,
+            text: ablyMessage.data.text,
+            sender: ablyMessage.data.sender,
+            timestamp: new Date(ablyMessage.timestamp)
+          };
+          setMessages(prev => [...prev, message]);
+        });
+
+        // Get message history
+        const history = await channel.history();
+        const historicalMessages: Message[] = history.items.map(item => ({
+          id: item.id,
+          text: item.data.text,
+          sender: item.data.sender,
+          timestamp: new Date(item.timestamp)
+        }));
+
+        setMessages(historicalMessages);
         setLoading(false);
       } catch (err) {
-        setError(
-          err instanceof Error ? err : new Error("Failed to load messages"),
-        );
+        setError(err instanceof Error ? err : new Error("Failed to load messages"));
         setLoading(false);
       }
     };
 
     loadMessages();
-  }, []);
+
+    // Cleanup function
+    return () => {
+      const ably = new Realtime({ authUrl: '/api/createTokenRequest' });
+      const channel = ably.channels.get(chatId || 'default-channel');
+      channel.unsubscribe();
+      ably.close();
+    };
+  }, [chatId]);
 
   const addNewMessage = (message: Message) => {
     setMessages((prev) => [...prev, message]);
