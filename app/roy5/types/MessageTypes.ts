@@ -14,6 +14,6 @@ export interface MessagesContextType extends MessagesState {
 }
 
 // Component props extends base state and adds component-specific properties
-export interface MessageListProps extends MessagesState {
+export interface MessageListProps {
   channelName: string;
 }

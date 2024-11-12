@@ -7,10 +7,16 @@ classDiagram
         +Date? timestamp
     }
 
-    class MessagesContextType {
+    class MessagesState {
+        +Message[] messages
         +boolean loading
         +Error? error
+    }
+
+    class MessagesContextType {
         +Message[] messages
+        +boolean loading
+        +Error? error
         +function addNewMessage
         +string? chatId
     }
@@ -22,15 +28,15 @@ classDiagram
     }
 
     class MessageListProps {
-        +Message[] messages
-        +boolean loading
-        +Error? error
         +string channelName
     }
 
     class MessagesProvider {
         +useState messages
+        +useState loading
+        +useState error
         +function addNewMessage
+        +provides MessagesContext
     }
 
     class MessageList {
@@ -38,18 +44,10 @@ classDiagram
         +uses MessagesContext
     }
 
-    class MessagesPage {
-        +useState messages
-        +useState loading
-        +useState error
-    }
-
-    Message --* MessagesContextType : contains[]
-    Message --* MessageListProps : contains[]
+    MessagesState <|-- MessagesContextType : extends
+    Message --* MessagesState : contains[]
     MessagesProvider ..|> MessagesContextType : implements
     MessagesProvider --* MessagesProviderProps : uses
     MessageList --* MessageListProps : uses
     MessageList --> MessagesContextType : consumes
-    MessagesPage --> MessageList : renders
-    MessagesPage --> Message : manages[]
 ```
