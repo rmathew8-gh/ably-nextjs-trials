@@ -12,20 +12,17 @@ async function initializeAuth() {
   return requestData;
 }
 
-initializeAuth()
-  .then((result) => {
-    console.log("Initialized auth:", result);
-    fetchChannels()
-      .then((result) => {
-        console.log(`Fetched (${result.items.length}) channels:`);
-      })
-      .catch((error) => {
-        console.error("Failed to fetch channels:", error);
-      });
-  })
-  .catch((error) => {
-    console.error("Failed to initialize auth:", error);
-  });
+async function initialize() {
+  try {
+    const authResult = await initializeAuth();
+    console.log("Initialized auth:", authResult);
+    
+    const channels = await fetchChannels();
+    console.log(`Fetched (${channels.items.length}) channels:`);
+  } catch (error) {
+    console.error("Failed during initialization:", error);
+  }
+}
 
 async function fetchChannels() {
   try {
@@ -49,3 +46,5 @@ async function fetchChannels() {
     throw error;
   }
 }
+
+initialize();
