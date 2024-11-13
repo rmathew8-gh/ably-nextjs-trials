@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MessageList } from "../components/MessageList";
 import { MessagesProvider } from "../contexts/MessagesContext";
-import { mockHandlers } from "../../common/handlers";
+import { mockHandlers } from "~/components/common/handlers";
 
 const meta: Meta<typeof MessageList> = {
   title: "Roy5/Component",

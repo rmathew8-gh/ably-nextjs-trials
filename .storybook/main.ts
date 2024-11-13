@@ -1,7 +1,7 @@
 import type { StorybookConfig } from "@storybook/nextjs";
 
 const config: StorybookConfig = {
-  stories: ["../app/roy5/**/*.stories.@(ts|tsx)"],
+  stories: ["../src/components/roy[45]/**/*.stories.@(ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",

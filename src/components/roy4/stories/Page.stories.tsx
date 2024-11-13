@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Page } from "../Page";
 import { MessagesProvider } from "../contexts/MessagesContext";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { mockHandlers } from "../../common/handlers";
+import { mockHandlers } from "~/components/common/handlers";
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
