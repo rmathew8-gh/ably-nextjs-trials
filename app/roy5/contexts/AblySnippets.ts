@@ -1,16 +1,19 @@
 import * as Ably from "ably";
 
+const CHANNEL_NAME = "h24:get-started";
+
+const ably = new Ably.Realtime(
+  "EMQ9Tw.HHx6Qw:Zq5gDfhVD9_Ovdv_VlZATtQ00l53iQEsuoTDvO2HgaE",
+);
+
 async function publishSubscribe() {
   // Connect to Ably with your API key
-  const ably = new Ably.Realtime(
-    "EMQ9Tw.HHx6Qw:Zq5gDfhVD9_Ovdv_VlZATtQ00l53iQEsuoTDvO2HgaE",
-  );
   ably.connection.once("connected", () => {
     console.log("Connected to Ably!");
   });
 
   // Create a channel called 'get-started' and register a listener to subscribe to all messages with the name 'first'
-  const channel = ably.channels.get("h24:get-started");
+  const channel = ably.channels.get(CHANNEL_NAME);
   await channel.subscribe("first", (message) => {
     console.log("Message received: " + message.data);
   });
@@ -31,4 +34,50 @@ async function publishSubscribe() {
   }, 5000);
 }
 
-publishSubscribe();
+async function getChannelHistory(channelName: string) {
+  try {
+
+    const channel = ably.channels.get(channelName);
+    const history = await channel.history({
+      // Optional parameters:
+      // start: <timestamp>, // earliest time in ms since epoch
+      // end: <timestamp>,   // latest time in ms since epoch
+      // limit: 100,         // maximum number of messages (up to 1000)
+      // direction: 'backwards' // or 'forwards'
+    });
+
+    const messages = history.items;
+    console.log('Channel history:', messages);
+
+    // If there are more pages, you can fetch them
+    if (history.hasNext()) {
+      const nextPage = await history.next();
+      console.log('Next page:', nextPage?.items);
+    }
+
+    ably.close();
+    return messages;
+
+  } catch (error) {
+    console.error('Error fetching channel history:', error);
+    throw error;
+  }
+}
+
+// Example usage with async/await
+async function main() {
+  try {
+    // await publishSubscribe();
+
+    const messages = await getChannelHistory(CHANNEL_NAME);
+    messages.forEach(msg => {
+      console.log(`Message ID: ${msg.id}`);
+      console.log(`Message Data: ${msg.data}`);
+      console.log(`Timestamp: ${msg.timestamp}`);
+    });
+  } catch (error) {
+    console.error('Main error:', error);
+  }
+}
+
+main();
