@@ -10,13 +10,17 @@ async function publishSubscribe() {
   });
 
   // Create a channel called 'get-started' and register a listener to subscribe to all messages with the name 'first'
-  const channel = ably.channels.get("get-started");
+  const channel = ably.channels.get("h24:get-started");
   await channel.subscribe("first", (message) => {
     console.log("Message received: " + message.data);
   });
 
   // Publish a message with the name 'first' and the contents 'Here is my first message!'
-  await channel.publish("first", "Here is my first message!");
+  for (let i = 0; i < 5; i++) {
+    let now = Date.now().toString();
+    await channel.publish("first", `Here is a message ${now}`);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
 
   // Close the connection to Ably after a 5 second delay
   setTimeout(async () => {
