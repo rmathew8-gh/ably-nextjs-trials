@@ -9,6 +9,7 @@ async function initializeAuth() {
   const requestData = await client.auth.createTokenRequest({
     clientId: String("roy"),
   });
+  console.log("Initialized auth:", requestData);
   return requestData;
 }
 
@@ -33,6 +34,11 @@ async function fetchChannels() {
       null,
       handleChannelResponse,
     );
+    console.log(`Fetched (${result.items.length}) channels:`);
+    result.items.forEach((channel) =>
+      console.log(` - Channel name: ${channel.name}`),
+    );
+
     return result;
   } catch (error) {
     console.error("Error invoking fetchChannels:", error);
@@ -59,14 +65,8 @@ async function createChannel(channelName: string) {
 async function initialize() {
   try {
     const authResult = await initializeAuth();
-    console.log("Initialized auth:", authResult);
-
     const channel = await createChannel("roy-channel");
-    console.log(`Created channel: (${channel})`);
-
     const channels = await fetchChannels();
-    console.log(`Fetched (${channels.items.length}) channels:`);
-
     // Close the connection when done
     client.close();
   } catch (error) {
