@@ -2,21 +2,12 @@ import * as Ably from "ably";
 
 const CHANNEL_NAME = "h24:default-channel";
 
-const ably = new Ably.Realtime(
+const ably = new Ably.Rest(
   "EMQ9Tw.HHx6Qw:Zq5gDfhVD9_Ovdv_VlZATtQ00l53iQEsuoTDvO2HgaE",
 );
 
 async function publishSubscribe() {
-  // Connect to Ably with your API key
-  ably.connection.once("connected", () => {
-    console.log("Connected to Ably!");
-  });
-
-  // Create a channel called 'get-started' and register a listener to subscribe to all messages with the name 'first'
   const channel = ably.channels.get(CHANNEL_NAME);
-  await channel.subscribe("first", (message) => {
-    console.log("Message received: " + message.data);
-  });
 
   // Publish a message with the name 'first' and the contents 'Here is my first message!'
   for (let i = 0; i < 5; i++) {
@@ -27,10 +18,7 @@ async function publishSubscribe() {
 
   // Close the connection to Ably after a 5 second delay
   setTimeout(async () => {
-    ably.connection.close();
-    ably.connection.once("closed", function () {
       console.log("Closed the connection to Ably.");
-    });
   }, 1000);
 }
 
@@ -53,8 +41,6 @@ async function getChannelHistory(channelName: string) {
       const nextPage = await history.next();
       console.log("Next page:", nextPage?.items);
     }
-
-    ably.close();
 
     messages.forEach((msg) => {
       console.log(`${msg.id}: ${msg.data}`);
